@@ -47,6 +47,12 @@ int set_charging_mode(libusb_device *dev, bool enable, int additional_value) {
 		return ret;
 	}
 
+	if ((ret = libusb_set_configuration(dev_handle, 1)) < 0) {
+		fprintf(stderr, "ipad_charge: unable to set device configuration: error %d\n", ret);
+		fprintf(stderr, "ipad_charge: %s\n", libusb_strerror(ret));
+		goto out_close;
+	}
+
 	if ((ret = libusb_claim_interface(dev_handle, 0)) < 0) {
 		fprintf(stderr, "ipad_charge: unable to claim interface: error %d\n", ret);
 		fprintf(stderr, "ipad_charge: %s\n", libusb_strerror(ret));
